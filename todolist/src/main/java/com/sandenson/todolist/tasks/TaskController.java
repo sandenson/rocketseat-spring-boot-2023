@@ -51,10 +51,9 @@ public class TaskController {
 
     @PutMapping("{id}")
     public ResponseEntity update(@PathVariable() UUID id, @RequestBody TaskModel model, HttpServletRequest request) {
-        // var tasks = this.taskRepository.findByUserId((UUID) request.getAttribute("userId"));
-        var taskOpt = this.taskRepository.findById(id);
+        var taskOpt = this.taskRepository.findByIdAndUserId(id, (UUID) request.getAttribute("userId"));
         
-        if (taskOpt.isPresent() && taskOpt.get().getUserId().equals((UUID) request.getAttribute("userId"))) {
+        if (taskOpt.isPresent()) {
             var task = taskOpt.get();
 
             Utils.copyNonNullProperties(model, task);
